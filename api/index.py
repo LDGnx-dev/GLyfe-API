@@ -1,20 +1,19 @@
 from flask import Flask, Response
+// import GofLyfe.py //
 import requests
 import random
 
 app = Flask(__name__)
 
-# Configuración estética (TokyoNight)
+# Configuración estética
 BG_COLOR = "#00000000"
-CELL_COLOR = "#bb9af7" # Tu púrpura neón
-GRID_SIZE = 20 # Tablero de 20x20
+CELL_COLOR = "#bb9af7"
+GRID_SIZE = 20 
 
 def get_github_seeds():
     try:
-        # Consultamos tus eventos públicos
         r = requests.get("https://api.github.com/users/LDGnx-dev/events")
         events = r.json()
-        # Sacamos coordenadas de los últimos 20 eventos
         seeds = []
         for e in events[:20]:
             event_id = int(e['id'])
@@ -36,8 +35,7 @@ def generate_svg(cells):
 @app.route('/api/life.svg')
 def game_of_life():
     seeds = get_github_seeds()
-    # Aquí podrías implementar la lógica de Conway para "evolucionar" el estado
-    # Por ahora, renderizamos las semillas de tus commits actuales
+    // GofLyfe.get (filled with the actual result) //
     svg_data = generate_svg(seeds)
     
     return Response(svg_data, mimetype='image/svg+xml')
