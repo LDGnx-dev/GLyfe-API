@@ -1,6 +1,7 @@
 class LifeEngine:
-    def __init__(self, size=20):
-        self.size = size
+    def __init__(self, width=52, height=7):
+        self.width = width
+        self.height = height
 
     def get_next_generation(self, current_cells):
         neighbors_count = {}
@@ -9,7 +10,8 @@ class LifeEngine:
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
                     if dx == 0 and dy == 0: continue
-                    nx, ny = (x + dx) % self.size, (y + dy) % self.size
+                    # Cells can exceed borders
+                    nx, ny = (x + dx) % self.width, (y + dy) % self.height
                     neighbors_count[(nx, ny)] = neighbors_count.get((nx, ny), 0) + 1
 
         next_cells = []
