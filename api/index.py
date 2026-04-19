@@ -3,8 +3,8 @@ import os
 import requests
 from flask import Flask, Response
 from PIL import Image, ImageDraw
-from api.GofLyfe import LifeEngine
-from api.config import *
+from GofLyfe import LifeEngine
+from config import *
 
 app = Flask(__name__)
 
