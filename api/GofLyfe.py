@@ -1,5 +1,5 @@
 class LifeEngine:
-    def __init__(self, width=52, height=7):
+    def __init__(self, width=53, height=7):
         self.width = width
         self.height = height
 
