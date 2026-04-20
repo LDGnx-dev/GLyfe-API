@@ -22,12 +22,15 @@ https://g-lyfe-api.vercel.app/api/life.gif?user=YOUR_USERNAME&color=HEX_COLOR
 This project translates technical activity into artificial biological rules. Here is the logic behind the simulation:
 
 1. The Canvas (52x7 Grid)
+
 Unlike traditional Game of Life setups, GynxLife uses the exact geometry of GitHub's contribution graph: 52 columns (weeks) by 7 rows (days).
 
 2. Toroidal Universe (Wrapping)
+
 To prevent "life" from dying at the edges, we implemented Modulo (%) logic. If a cell exits through the right, it reappears on the left. This creates a seamless, infinite-feeling simulation.
 
 3. The Golden Rules
+
 The engine evaluates each cell based on its 8 immediate neighbors:
 
     Survival: A live cell with 2 or 3 neighbors stays alive.
