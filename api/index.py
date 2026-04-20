@@ -1,8 +1,15 @@
 import io
 import os
+import sys
+
+# (api/) added to the search
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import requests
 from flask import Flask, Response, request
 from PIL import Image, ImageDraw
+
+# Local and cloud functions
 from GofLyfe import LifeEngine
 from config import *
 
