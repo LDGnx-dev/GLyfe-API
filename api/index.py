@@ -1,14 +1,14 @@
 import io
 import os
 import requests
-from flask import Flask, Response
+from flask import Flask, Response, request
 from PIL import Image, ImageDraw
 from GofLyfe import LifeEngine
 from config import *
 
 app = Flask(__name__)
 
-# Local variables load
+# Local variables for testing purposes
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -17,7 +17,7 @@ except ImportError:
 
 TOKEN = os.environ.get('GITHUB_TOKEN')
 
-def get_contribution_matrix():
+def get_contribution_matrix(target_user):
     query = """
     query {
       user(login: "%s") {
@@ -32,7 +32,7 @@ def get_contribution_matrix():
         }
       }
     }
-    """ % GITHUB_USERNAME
+    """ % target_user
 
     headers = {"Authorization": f"bearer {TOKEN}"}
     try:
@@ -51,7 +51,7 @@ def get_contribution_matrix():
         print(f"Error fetching data: {e}")
         return []
 
-def generate_gif(seeds):
+def generate_gif(seeds, target_color):
     engine = LifeEngine(width=GRID_WIDTH, height=GRID_HEIGHT)
     images = []
     current_gen = seeds
@@ -62,7 +62,7 @@ def generate_gif(seeds):
         for (x, y) in current_gen:
             x1, y1 = x * CELL_SCALE, y * CELL_SCALE
             x2, y2 = x1 + CELL_SCALE - 2, y1 + CELL_SCALE - 2
-            draw.rounded_rectangle([x1, y1, x2, y2], radius=2, fill=CELL_COLOR)
+            draw.rounded_rectangle([x1, y1, x2, y2], radius=2, fill=target_color)
         images.append(img)
         current_gen = engine.get_next_generation(current_gen)
 
@@ -71,36 +71,46 @@ def generate_gif(seeds):
                    duration=FRAME_DURATION, loop=0, disposal=2)
     return out.getvalue()
 
-# GofLyfe GIF
 @app.route('/api/life.gif')
 def game_of_life():
-    initial_cells = get_contribution_matrix()
-    gif_data = generate_gif(initial_cells)
+    # URL parameters or config.py (deafult user: LDGnx-dev)
+    req_user = request.args.get('user', GITHUB_USERNAME)
+    req_color = request.args.get('color', CELL_COLOR.replace('#', ''))
+    
+    if not req_color.startswith('#'):
+        req_color = f"#{req_color}"
+        
+    # Data generator
+    initial_cells = get_contribution_matrix(req_user)
+    gif_data = generate_gif(initial_cells, req_color)
+    
+    # Dynamic cache (each URL has his own cache for 24 hours)
     headers = {'Cache-Control': 'public, max-age=86400, s-maxage=86400'}
     return Response(gif_data, mimetype='image/gif', headers=headers)
 
-# GofLyfe First Generation PNG
 @app.route('/api/seed.png')
 def debug_seed_image():
-    # GitHub Data
-    initial_cells = get_contribution_matrix()
+    # Diagnose Endpoint
+    req_user = request.args.get('user', GITHUB_USERNAME)
+    req_color = request.args.get('color', CELL_COLOR.replace('#', ''))
     
-    # Map (52x7)
+    if not req_color.startswith('#'):
+        req_color = f"#{req_color}"
+        
+    initial_cells = get_contribution_matrix(req_user)
     img = Image.new('RGBA', (GRID_WIDTH * CELL_SCALE, GRID_HEIGHT * CELL_SCALE), BG_COLOR)
     draw = ImageDraw.Draw(img)
     
-    # First Gen drwawing
     for (x, y) in initial_cells:
         x1, y1 = x * CELL_SCALE, y * CELL_SCALE
         x2, y2 = x1 + CELL_SCALE - 2, y1 + CELL_SCALE - 2
-        draw.rounded_rectangle([x1, y1, x2, y2], radius=2, fill=CELL_COLOR)
-    
-    # PNG gen
+        draw.rounded_rectangle([x1, y1, x2, y2], radius=2, fill=req_color)
+        
     out = io.BytesIO()
     img.save(out, format='PNG')
     
-    headers = {'Cache-Control': 'no-cache'}
-    return Response(out.getvalue(), mimetype='image/png', headers=headers)
+    # No cache for fast tests
+    return Response(out.getvalue(), mimetype='image/png', headers={'Cache-Control': 'no-cache'})
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run()

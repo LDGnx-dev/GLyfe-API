@@ -1,16 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/api/index.py" }
-  ],
-  "headers": [
-    {
-      "source": "/api/life.gif",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800, s-maxage=604800"
-        }
-      ]
-    }
   ]
 }
