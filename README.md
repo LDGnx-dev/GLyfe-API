@@ -5,7 +5,7 @@ GynxLife-API transforms your GitHub contribution history (the 52-week grid) into
 
 <p>
 <img src="https://g-lyfe-api.vercel.app/api/seed.png" alt="GynxLife Evolution Seed" width="600">
-<img src="https://g-lyfe-api.vercel.app/api/life.gif" alt="GynxLife Evolution" width="600">
+<img src="https://g-lyfe-api.vercel.app/api/life.gif?gun" alt="GynxLife Evolution" width="600">
 </p>
 
 # Quick Start
