@@ -12,7 +12,7 @@ def build_dynamic_svg(w, h, color):
     height_px = h * scale
     
     total_generations = 20     
-    frame_duration = 0.8      
+    frame_duration = 0.5      
     dur_total = total_generations * frame_duration
     
     engine = LifeEngine(width=w, height=h)
