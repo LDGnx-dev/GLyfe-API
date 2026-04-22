@@ -1,17 +1,6 @@
 import re
 import requests
 
-def sanitize_inputs(raw_user, raw_color, default_user, default_color):
-    clean_user = re.sub(r'[^a-zA-Z0-9-]', '', str(raw_user))
-    if not clean_user: 
-        clean_user = default_user
-        
-    clean_color = re.sub(r'[^a-fA-F0-9]', '', str(raw_color))
-    if not clean_color:
-        clean_color = default_color.replace('#', '')
-        
-    return clean_user, f"#{clean_color}"
-
 def get_contribution_matrix(target_user, limit_w, token):
     query = """
     query { user(login: "%s") { contributionsCollection { contributionCalendar { weeks { contributionDays { contributionCount } } } } } }

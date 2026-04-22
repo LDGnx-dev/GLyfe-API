@@ -1,12 +1,13 @@
 import os
 import sys
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, redirect
 
 # Path main to found the modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.config import *
-from core.utils import sanitize_inputs, get_contribution_matrix
+from core.security import is_junk_request, sanitize_inputs
+from core.utils import get_contribution_matrix
 from data.patterns import get_preset_pattern
 from core.gif_gen import generate_gif, generate_png
 # from core.svg_gen import generate_background_svg
@@ -23,6 +24,13 @@ TOKEN = os.environ.get('GITHUB_TOKEN')
 
 @app.route('/api/life.gif')
 def game_of_life():
+
+
+    allowed_keys = ['user', 'color', 'pattern', 'w', 'h']
+    if is_junk_request(request.args, allowed_keys):
+        return redirect('/assets/errors/400.html')
+
+
     raw_user = request.args.get('user', GITHUB_USERNAME)
     raw_color = request.args.get('color', CELL_COLOR)
     req_pattern = request.args.get('pattern', None)
@@ -54,6 +62,13 @@ def game_of_life():
 
 @app.route('/api/seed.png')
 def debug_seed_image():
+
+    
+    allowed_keys = ['user', 'color', 'pattern', 'w', 'h']
+    if is_junk_request(request.args, allowed_keys):
+        return redirect('/assets/errors/400.html')
+
+
     raw_user = request.args.get('user', GITHUB_USERNAME)
     raw_color = request.args.get('color', CELL_COLOR)
     req_pattern = request.args.get('pattern', None)
@@ -71,11 +86,11 @@ def debug_seed_image():
 
 @app.errorhandler(404)
 def resource_not_found(e):
-    return jsonify({"error": "Ruta no encontrada", "mensaje": "El motor GLyfe-API solo procesa /api/life.gif y /api/seed.png", "status": 404}), 404
+    return redirect('/assets/errors/404.html')
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return jsonify({"error": "Error interno del servidor", "mensaje": "Las células mutaron de forma inesperada. Revisa los logs.", "status": 500}), 500
+    return redirect('/assets/errors/500.html')
 
 if __name__ == "__main__":
     app.run()
