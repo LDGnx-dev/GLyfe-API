@@ -10,7 +10,7 @@ from core.security import is_junk_request, sanitize_inputs
 from core.utils import get_contribution_matrix
 from data.patterns import get_preset_pattern
 from core.gif_gen import generate_gif, generate_png
-from core.svg_gen import build_dynamic_svg
+from core.svg_gen import build_dynamic_svg, build_bg_svg
 
 app = Flask(__name__)
 
@@ -88,7 +88,7 @@ def debug_seed_image():
     png_data = generate_png(initial_cells, req_color, active_w, active_h, BG_COLOR, CELL_SCALE)
     return Response(png_data, mimetype='image/png', headers={'Cache-Control': 'no-cache'})
 
-################## SEED SVG ##################
+################## SVG ##################
 
 @app.route('/api/background.svg')
 def background_svg():
@@ -110,6 +110,32 @@ def background_svg():
     # cache_time = 1800
 
     headers = {'Cache-Control': f'public, max-age={cache_time}, s-maxage={cache_time}'}
+    return Response(svg_data, mimetype='image/svg+xml', headers=headers)
+
+################## SVG ##################
+
+@app.route('/api/bg.svg')
+def background_alternative():
+    # 1. Atrapamos los parámetros de la URL con valores seguros por defecto
+    try:
+        req_w = int(request.args.get('w', 120))
+        req_h = int(request.args.get('h', 60))
+    except (ValueError, TypeError):
+        req_w, req_h = 120, 60
+        
+    # Podemos probar con ese tono violeta/amatista para darle un toque increíble, 
+    # o mantener el verde clásico si no mandan nada.
+    req_color = request.args.get('color', '#a855f7') 
+    
+    # Si el usuario mandó el color sin el '#', se lo agregamos por seguridad
+    if not req_color.startswith('#'):
+        req_color = f'#{req_color}'
+
+    # 2. Generamos el texto del SVG usando tu función
+    svg_data = build_bg_svg(req_w, req_h, req_color)
+    
+    # 3. Lo empaquetamos como una imagen real con caché
+    headers = {'Cache-Control': 'public, max-age=1800'} # 30 minutos de caché
     return Response(svg_data, mimetype='image/svg+xml', headers=headers)
 
 @app.errorhandler(404)
