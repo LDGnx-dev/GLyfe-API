@@ -7,6 +7,11 @@ body {
     align-items: center; 
     height: 100vh; 
     margin: 0; 
+    
+    background-image: url('/api/background.svg?color=a855f7&w=120&h=60');
+    background-size: cover;
+    background-position: center;
+}
 }
 .container { 
     background: #161b22; 
