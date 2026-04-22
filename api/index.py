@@ -28,7 +28,7 @@ def game_of_life():
 
     allowed_keys = ['user', 'color', 'pattern', 'w', 'h']
     if is_junk_request(request.args, allowed_keys):
-        return redirect('/assets/errors/400.html')
+        return redirect('/assets/errors/404/404.html')
 
 
     raw_user = request.args.get('user', GITHUB_USERNAME)
@@ -66,7 +66,7 @@ def debug_seed_image():
     
     allowed_keys = ['user', 'color', 'pattern', 'w', 'h']
     if is_junk_request(request.args, allowed_keys):
-        return redirect('/assets/errors/400.html')
+        return redirect('/assets/errors/404/404.html')
 
 
     raw_user = request.args.get('user', GITHUB_USERNAME)
@@ -86,11 +86,11 @@ def debug_seed_image():
 
 @app.errorhandler(404)
 def resource_not_found(e):
-    return redirect('/assets/errors/404.html')
+    return redirect('/assets/errors/404/404.html')
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return redirect('/assets/errors/500.html')
+    return redirect('/assets/errors/500/500.html')
 
 if __name__ == "__main__":
     app.run()
