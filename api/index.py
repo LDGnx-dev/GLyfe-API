@@ -46,8 +46,8 @@ def get_preset_pattern(pattern_name):
         return [(1,0), (2,1), (0,2), (1,2), (2,2)], GRID_WIDTH, GRID_HEIGHT
         
     elif pattern_name == 'random':
-        today = datetime.now().strftime('%Y-%m-%d')
-        random.seed(today) # Date as seed for random
+      #  today = datetime.now().strftime('%Y-%m-%d')
+      #  random.seed(today) # Date as seed for random
         num_cells = random.randint(40, 100)
         seeds = [(random.randint(0, GRID_WIDTH-1), random.randint(0, GRID_HEIGHT-1)) for _ in range(num_cells)]
         return seeds, GRID_WIDTH, GRID_HEIGHT
