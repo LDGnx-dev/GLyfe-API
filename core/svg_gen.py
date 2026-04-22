@@ -12,7 +12,7 @@ def build_dynamic_svg(w, h, color):
     height_px = h * scale
     
     total_generations = 20     
-    frame_duration = 1.5      
+    frame_duration = 0.8      
     dur_total = total_generations * frame_duration
     
     engine = LifeEngine(width=w, height=h)
@@ -48,7 +48,7 @@ def build_dynamic_svg(w, h, color):
         /* Animación 1: El zoom suave que ya teníamos */
         @keyframes breathe {
             0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            100% { transform: scale(1.1); }
         }
         
         /* Animación 2: Rotación de péndulo apenas visible (-1.5 a 1.5 grados) */
