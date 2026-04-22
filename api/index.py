@@ -22,6 +22,13 @@ except ImportError:
 
 TOKEN = os.environ.get('GITHUB_TOKEN')
 
+defaults = {
+        'user': GITHUB_USERNAME,
+        'color': CELL_COLOR,
+        'w': GRID_WIDTH,
+        'h': GRID_HEIGHT
+    }
+
 @app.route('/api/life.gif')
 def game_of_life():
 
@@ -31,12 +38,17 @@ def game_of_life():
         return redirect('/assets/errors/404/404.html')
 
 
-    raw_user = request.args.get('user', GITHUB_USERNAME)
-    raw_color = request.args.get('color', CELL_COLOR)
-    req_pattern = request.args.get('pattern', None)
+    u, c, w, h = sanitize_inputs(
+        request.args.get('user'),
+        request.args.get('color'),
+        request.args.get('w'),
+        request.args.get('h'),
+        defaults
+    )
+
+    pattern_name = request.args.get('pattern')
+    preset_seeds, active_w, active_h = get_preset_pattern(pattern_name, w, h)
     
-    req_user, req_color = sanitize_inputs(raw_user, raw_color, GITHUB_USERNAME, CELL_COLOR)
-    preset_seeds, active_w, active_h = get_preset_pattern(req_pattern, GRID_WIDTH, GRID_HEIGHT)
     
     if preset_seeds is None:
         initial_cells = get_contribution_matrix(req_user, GRID_WIDTH, TOKEN)
