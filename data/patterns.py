@@ -43,4 +43,4 @@ def get_preset_pattern(pattern_name, default_w, default_h):
         return gun, w, h
 
     
-return None, default_w, default_h
+    return None, default_w, default_h
