@@ -21,9 +21,9 @@ https://g-lyfe-api.vercel.app/api/life.gif?user=YOUR_USERNAME&color=HEX_COLOR
 
 This project translates technical activity into artificial biological rules. Here is the logic behind the simulation:
 
-1. The Canvas (52x7 Grid)
+1. The Canvas (53x7 Grid)
 
-Unlike traditional Game of Life setups, GynxLife uses the exact geometry of GitHub's contribution graph: 52 columns (weeks) by 7 rows (days).
+Unlike traditional Game of Life setups, GynxLife uses the exact geometry of GitHub's contribution graph: 53 columns (weeks) by 7 rows (days).
 
 2. Toroidal Universe (Wrapping)
 
