@@ -25,16 +25,5 @@ def sanitize_inputs(raw_user, raw_color, default_user, default_color):
     clean_color = re.sub(r'[^a-fA-F0-9]', '', str(raw_color))[:6]
     if not clean_color:
         clean_color = default_color.replace('#', '')
-
-    try:
-        val_w = int(raw_w) if raw_w else defaults['w']
-        clean_w = min(max(val_w, 10), 120) 
         
-        val_h = int(raw_h) if raw_h else defaults['h']
-        clean_h = min(max(val_h, 10), 120)
-    except (ValueError, TypeError):
-        clean_w = defaults['w']
-        clean_h = defaults['h']
-
-
-    return clean_user, f"#{clean_color}", clean_w, clean_h
+    return clean_user, f"#{clean_color}"
