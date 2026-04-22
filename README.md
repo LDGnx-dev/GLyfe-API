@@ -4,8 +4,8 @@ Your commits are life. Literally.
 GynxLife-API transforms your GitHub contribution history (the 52-week grid) into a living simulation of Conway's Game of Life. Every commit acts as a seed that interacts with its neighbors to create unique, evolving evolutionary patterns.
 
 <p>
-<img src="https://g-lyfe-api.vercel.app/api/seed.png?pattern=r-pentomino" alt="GynxLife Evolution Seed" width="600">
-<img src="https://g-lyfe-api.vercel.app/api/life.gif?pattern=r-pentomino" alt="GynxLife Evolution" width="600">
+<img src="https://g-lyfe-api.vercel.app/api/seed.png?pattern=random" alt="GynxLife Evolution Seed" width="600">
+<img src="https://g-lyfe-api.vercel.app/api/life.gif?pattern=random" alt="GynxLife Evolution" width="600">
 </p>
 
 # Quick Start
