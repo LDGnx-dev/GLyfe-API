@@ -8,7 +8,7 @@ body {
     height: 100vh; 
     margin: 0; 
     
-    background-image: url('/api/background.svg?color=a855f7&w=120&h=60');
+    background-image: url('/api/bg.svg?w=150&h=90');
     background-size: cover;
     background-position: center;
 }
