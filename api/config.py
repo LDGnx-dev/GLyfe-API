@@ -2,14 +2,14 @@
 GITHUB_USERNAME = "LDGnx-dev"
 
 # Stetics
-CELL_COLOR = "#bb9af7"         # Tu púrpura neón
-BG_COLOR = (0, 0, 0, 0)        # Fondo Transparente
+CELL_COLOR = "#bb9af7"
+BG_COLOR = (0, 0, 0, 0)
 
 # Map Config (GitHub Yearly Standard)
-GRID_WIDTH = 52
+GRID_WIDTH = 53
 GRID_HEIGHT = 7
 CELL_SCALE = 10
 
 # Animation configs
-TOTAL_FRAMES = 100
-FRAME_DURATION = 150
+TOTAL_FRAMES = 70
+FRAME_DURATION = 200
