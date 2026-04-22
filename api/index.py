@@ -57,7 +57,7 @@ def get_preset_pattern(pattern_name):
         return [(cx, cy-1), (cx+1, cy-1), (cx-1, cy), (cx, cy), (cx, cy+1)], GRID_WIDTH, GRID_HEIGHT
         
     elif pattern_name == 'gun':
-        w, h = 52, 15
+        w, h = 52, 52
         gun = [
             (24, 1), (22, 2), (24, 2), (12, 3), (13, 3), (20, 3), (21, 3), (34, 3), (35, 3),
             (11, 4), (15, 4), (20, 4), (21, 4), (34, 4), (35, 4), (0, 5), (1, 5), (10, 5),
@@ -114,22 +114,40 @@ def game_of_life():
     raw_color = request.args.get('color', CELL_COLOR)
     req_pattern = request.args.get('pattern', None)
     
-    # 1. Secured enter
+    # Secured enter
     req_user, req_color = sanitize_inputs(raw_user, raw_color)
     
-    # 2. Check for Easter Egg
+    # Check for Easter Egg
     preset_seeds, active_w, active_h = get_preset_pattern(req_pattern)
     
-    # 3. GitHub read when no EEgg
+    # GitHub read when no EEgg
     if preset_seeds is None:
         initial_cells = get_contribution_matrix(req_user)
     else:
         initial_cells = preset_seeds
 
-    # 4. GIF generate
+    # GIF Cache value by type
+    if req_pattern == 'random':
+        cache_time = 5 # 5 seconds just for test purposes
+       # cache_time = 300 # # 5 minutes
+        wrapping = True 
+    elif req_pattern is not None:
+        cache_time = 604800  # 1 week
+        wrapping = False
+    else:
+        cache_time = 86400  # 1 day (GitHub Commits)
+        wrapping = True
+
+    # GIF generate
     gif_data = generate_gif(initial_cells, req_color, active_w, active_h)
-    
-    headers = {'Cache-Control': 'public, max-age=86400, s-maxage=86400'}
+
+    # Reserved area for the cache controls
+    # validate the time completition or not
+    # to keep or clean cache 
+
+    headers = {
+        'Cache-Control': f'public, max-age={cache_time}, s-maxage={cache_time}'
+    }
     return Response(gif_data, mimetype='image/gif', headers=headers)
 
 # Initial seed preview
