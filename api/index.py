@@ -57,7 +57,7 @@ def get_preset_pattern(pattern_name):
         return [(cx, cy-1), (cx+1, cy-1), (cx-1, cy), (cx, cy), (cx, cy+1)], GRID_WIDTH, GRID_HEIGHT
         
     elif pattern_name == 'gun':
-        w, h = 52, 52
+        w, h = 40, 25
         gun = [
             (24, 1), (22, 2), (24, 2), (12, 3), (13, 3), (20, 3), (21, 3), (34, 3), (35, 3),
             (11, 4), (15, 4), (20, 4), (21, 4), (34, 4), (35, 4), (0, 5), (1, 5), (10, 5),
